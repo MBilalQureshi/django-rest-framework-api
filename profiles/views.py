@@ -13,6 +13,7 @@ from .models import Profile
 # now we add our serializer in view to fix 'Object of type Profile is not JSON serializable' bug
 from .serializers import ProfileSerializer
 from django.http import Http404
+from rest_framework import status
 
 class ProfileList(APIView):
     '''
@@ -31,6 +32,12 @@ class ProfileList(APIView):
         return Response(serializer.data)
 
 class ProfileDetail(APIView):
+    #    wouldn’t  it be better to have a nice form instead?   
+    # If we explicitly set the serializer_class attribute  on our ProfileDetail view, the rest framework  
+    # will automatically render a form for us, based on  the fields we defined in our ProfileSerializer.
+    # Now, if we save and refresh,  a proper form appears inshort beautify and fix form as per DB.
+    serializer_class = ProfileSerializer
+
     # We need code to handle request for profile id that dosen't exist,(see below)
     def get_object(self, pk):
         try:
@@ -44,3 +51,11 @@ class ProfileDetail(APIView):
         # get single profile based on id so no manyu=true
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
+
+    def put(self, request, pk):
+        profile = self.get_object(pk)
+        serializer = ProfileSerializer(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
