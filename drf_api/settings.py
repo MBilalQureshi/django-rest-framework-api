@@ -19,7 +19,6 @@ if os.path.exists('env.py'):
 CLOUDINARY_STORAGE = {
     'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
 }
-print(CLOUDINARY_STORAGE)
 
 # The code below is standard django folder to store media files like images, now setting know where to put our image files
 MEDIA_URL = '/media/'
@@ -33,13 +32,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-fij^7xc62hm_^lizwfvo)#3ryvykz6&&$=4sy0sc=&np@9v9vo'
 SECRET_KEY = os.environ.get('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-t9ggqll99dd.ws-us107.gitpod.io']
+ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-qd5jaotagrv.ws-us107.gitpod.io']
 
 
 # Application definition
@@ -53,6 +50,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'django.contrib.staticfiles',
     'cloudinary',
+    'rest_framework',
     'profiles',
 ]
 
