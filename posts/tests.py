@@ -21,5 +21,5 @@ class PostListViewTests(APITestCase):
         response = self.client.post('/posts/', {'title': 'a title'})
         count = Post.objects.count()
         self.assertEqual(count, 1)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     
