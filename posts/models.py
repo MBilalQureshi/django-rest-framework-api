@@ -13,7 +13,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True)
     image = models.ImageField(
-        upload_to='images/', default='../default_profile_oojj4p', blank=True
+        upload_to='images/', default='../default_post_vzxkyq', blank=True
     )
 
     class Meta:
