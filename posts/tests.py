@@ -11,7 +11,7 @@ class PostListViewTests(APITestCase):
         adam = User.objects.get(username='adam')
         Post.objects.create(owner=adam, title='a title')
         response = self.client.get('/posts/')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         print(response.data)
         print(len(response.data))
     
