@@ -18,5 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # to restric user to use their own profile
+    path('api-auth/', include('rest_framework.urls')),
     path('',include('profiles.urls')),
 ]

@@ -14,6 +14,8 @@ from .models import Profile
 from .serializers import ProfileSerializer
 from django.http import Http404
 from rest_framework import status
+# Importing the perssion we made in drf_api
+from drf_api.permissions import IsOwnerOrReadOnly
 
 class ProfileList(APIView):
     '''
@@ -37,11 +39,19 @@ class ProfileDetail(APIView):
     # will automatically render a form for us, based on  the fields we defined in our ProfileSerializer.
     # Now, if we save and refresh,  a proper form appears inshort beautify and fix form as per DB.
     serializer_class = ProfileSerializer
+    
+    #  set the permission_classes  attribute on the ProfileDetail view to an array containing our permission.
+    permission_classes = [IsOwnerOrReadOnly]
 
     # We need code to handle request for profile id that dosen't exist,(see below)
     def get_object(self, pk):
         try:
             profile = Profile.objects.get(pk=pk)
+            # The last thing we have to do is update the  get_object method by explicitly checking  
+            # object permissions before we return a profile  instance. If the user doesn’t own the profile,  
+            # it will throw the 403 Forbidden  error and not return the instance.
+            self.check_object_permissions(self.request, profile)
+
             return profile
         except Profile.DoesNotExist:
             raise Http404
