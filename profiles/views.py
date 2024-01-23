@@ -14,7 +14,7 @@ from .models import Profile
 from .serializers import ProfileSerializer
 from django.http import Http404
 from rest_framework import status
-# Importing the perssion we made in drf_api
+# Importing the permission we made in drf_api
 from drf_api.permissions import IsOwnerOrReadOnly
 
 class ProfileList(APIView):
