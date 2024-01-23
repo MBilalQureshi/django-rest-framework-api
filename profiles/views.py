@@ -29,8 +29,8 @@ class ProfileList(APIView):
         We’ll pass in profiles and many equals True, to specify  we’re serializing multiple Profile instances.
         Finally, in the Response, we’ll send  data returned from our serializer.
         '''
-        # many = True means we'll pass multiple profile instances
-        serializer = ProfileSerializer(profiles, many=True)
+        # many = True means we'll pass multiple profile instances, SOL is context={'request': request} making request part of context object to access it in serializer.py side
+        serializer = ProfileSerializer(profiles, many=True, context={'request': request})
         return Response(serializer.data)
 
 class ProfileDetail(APIView):
@@ -58,13 +58,14 @@ class ProfileDetail(APIView):
 
     def get(self, request, pk):
         profile = self.get_object(pk)
-        # get single profile based on id so no manyu=true
-        serializer = ProfileSerializer(profile)
+        # get single profile based on id so no manyu=true ------ SOL is context={'request': request} making request part of context object to access it in serializer.py side
+        serializer = ProfileSerializer(profile, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
         profile = self.get_object(pk)
-        serializer = ProfileSerializer(profile, data=request.data)
+        # SOL is context={'request': request} making request part of context object to access it in serializer.py side
+        serializer = ProfileSerializer(profile, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
