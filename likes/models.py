@@ -19,6 +19,7 @@ class Like(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+        # this is to avoid the post to be liked multiple time bu same user and will cause integrity error
         unique_together = ['owner', 'post']
 
     def __str__(self):
