@@ -21,5 +21,6 @@ urlpatterns = [
     # to restric user to use their own profile
     path('api-auth/', include('rest_framework.urls')),
     path('',include('profiles.urls')),
-    path ('', include('posts.urls')),
+    path('', include('posts.urls')),
+    path('', include('comments.urls')),
 ]
