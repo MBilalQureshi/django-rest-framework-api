@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Like
-from django.db import integrityError
+from django.db import IntegrityError
 
 class LikeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source="owner.username")
@@ -14,7 +14,7 @@ class LikeSerializer(serializers.ModelSerializer):
         try:
             # This create method is on the model serializer  and for that reason I had to call “super()”.
             return super().create(validated_data)
-        except integrityError:
-            raise serilizers.ValidationError({
-                'detail': 'possible dublicate'
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'possible duplicate'
             })
