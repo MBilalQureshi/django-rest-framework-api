@@ -2,6 +2,7 @@ from rest_framework import generics, permissions
 from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Comment
 from .serializers import CommentSerializer, CommentDetailSerializer
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Now we'll use generics here that had already took care of most of work like get, post, put, delete
 
@@ -11,6 +12,9 @@ from .serializers import CommentSerializer, CommentDetailSerializer
 
 # here List is GET and Create is POST
 class CommentList(generics.ListCreateAPIView):
+    """
+    List comments or create a comment if logged in.
+    """
     serializer_class = CommentSerializer
     # we don't want anonymous users to comment
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -19,6 +23,9 @@ class CommentList(generics.ListCreateAPIView):
     # This would make sense if we were  dealing with user sensitive data  
     # like orders or payments where we would need to  make sure users can access and query only their own data. BUT in this case we want all comments so .all()
     queryset = Comment.objects.all()
+    
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['post']
     # we’ll have to make sure  comments are associated with a user upon creation.  
     # We do this with generics by  defining the perform_create method,  
     # which takes in self and serializer as arguments.  Inside, we pass in the user making the request as  
@@ -28,6 +35,9 @@ class CommentList(generics.ListCreateAPIView):
 
 # Now this generic view can retrive, update and delete a comment
 class CommentDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Retrieve a comment, or update or delete it by id if you own it.
+    """
     permission_classes = [
         IsOwnerOrReadOnly
     ]
