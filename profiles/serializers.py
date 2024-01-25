@@ -10,6 +10,11 @@ class ProfileSerializer(serializers.ModelSerializer):
     # To check who are we following
     following_id = serializers.SerializerMethodField()
 
+    # Add counts made in profile list view here now, source not needed
+    posts_count = serializers.ReadOnlyField()
+    follower_count = serializers.ReadOnlyField()
+    following_count = serializers.ReadOnlyField()
+
     # above is_owner is connected when saying below get_is_owner
     def get_is_owner(self, obj):
         # how to check if rquest.user is same as objects owner, see part of solution in view.py see "SOL" after adding SOL is context={'request': request} we come
@@ -35,5 +40,5 @@ class ProfileSerializer(serializers.ModelSerializer):
         # In response, inside fields could list them  all in an array or set to fields = '__all__'
         fields = [
             'id', 'owner', 'created_at', 'updated_at', 'name', 'content', 'image', 
-            'is_owner', 'following_id'
+            'is_owner', 'following_id', 'posts_count','follower_count','following_count'
         ]
