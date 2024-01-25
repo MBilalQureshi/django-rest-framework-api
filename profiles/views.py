@@ -34,7 +34,8 @@ class ProfileList(generics.ListAPIView):
 
 # Adding advance filter using django_filters app
     filterset_fields = [
-        'owner__following__followed__profile'
+        'owner__following__followed__profile',
+        'owner__followed__owner__profile'
     ]
 
     # This below code will only active these filters on front
