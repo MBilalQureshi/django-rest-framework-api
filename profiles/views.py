@@ -3,6 +3,7 @@ from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Profile
 from .serializers import ProfileSerializer
 from django.db.models import Count
+from django_filters.rest_framework import DjangoFilterBackend
 
 class ProfileList(generics.ListAPIView):
     """
@@ -27,8 +28,15 @@ class ProfileList(generics.ListAPIView):
 
     # Adding this very filter will activate filter on front
     filter_backends = [
-        filters.OrderingFilter
+        filters.OrderingFilter,
+        DjangoFilterBackend,
     ]
+
+# Adding advance filter using django_filters app
+    filterset_fields = [
+        'owner__following__followed__profile'
+    ]
+
     # This below code will only active these filters on front
     ordering_fields = [
         'posts_count',
