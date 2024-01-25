@@ -19,10 +19,10 @@ class ProfileList(generics.ListAPIView):
     # queryset = Profile.objects.all()
     queryset = Profile.objects.annotate(
         # we can use __ to show relation ship between profile(table) -> user(table) -> post(table) so, owner__post, owner(field) is in profile table.
-        posts_count = Count('owner__post', distict=True),
+        posts_count = Count('owner__post', distinct=True),
         # This time its owner(field)__followed(field), followed is in Followers table
-        follower_count = Count('owner__followed', distict=True),
-        following_count = Count('owner__following', distict=True)
+        follower_count = Count('owner__followed', distinct=True),
+        following_count = Count('owner__following', distinct=True)
     ).order_by('-created_at')
 
     # Adding this very filter will activate filter on front
@@ -51,9 +51,9 @@ class ProfileDetail(generics.RetrieveUpdateAPIView):
     # Just copy the above view code for queryset here to see the effects for single profile as well, obviously filters are not needed for single profile
     queryset = Profile.objects.annotate(
         # we can use __ to show relation ship between profile(table) -> user(table) -> post(table) so, owner__post, owner(field) is in profile table.
-        posts_count = Count('owner__post', distict=True),
+        posts_count = Count('owner__post', distinct=True),
         # This time its owner(field)__followed(field), followed is in Followers table
-        follower_count = Count('owner__followed', distict=True),
-        following_count = Count('owner__following', distict=True)
+        follower_count = Count('owner__followed', distinct=True),
+        following_count = Count('owner__following', distinct=True)
     ).order_by('-created_at')
     serializer_class = ProfileSerializer

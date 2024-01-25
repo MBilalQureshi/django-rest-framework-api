@@ -14,6 +14,9 @@ class PostSerializer(serializers.ModelSerializer):
 
     like_id = serializers.SerializerMethodField()
 
+    likes_count = serializers.ReadOnlyField()
+    comments_count = serializers.ReadOnlyField()
+
     # as the db field that needs to be vlidated is image so method would be validate_image "If we follow this naming convention,  this method will be called automatically  
     # and validate the uploaded image every  time we create or update a post."
     def validate_image(self, value):
@@ -50,5 +53,5 @@ class PostSerializer(serializers.ModelSerializer):
         # In response, inside fields could list them  all in an array or set to fields = '__all__'
         fields = [
             'id', 'owner', 'is_owner', 'profile_id', 'profile_image', 'created_at', 'updated_at', 'title', 'content', 'image',
-            'image_filter', 'like_id'
+            'image_filter', 'like_id', 'likes_count', 'comments_count'
         ]
