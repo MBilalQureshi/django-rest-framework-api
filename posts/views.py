@@ -3,7 +3,7 @@ from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Post
 from .serializers import PostSerializer
 from django.db.models import Count
-
+from django_filters.rest_framework import DjangoFilterBackend
 
 class PostList(generics.ListCreateAPIView):
     """
@@ -20,7 +20,8 @@ class PostList(generics.ListCreateAPIView):
 
     filter_backends = [
         filters.OrderingFilter,
-        filters.SearchFilter
+        filters.SearchFilter,
+        DjangoFilterBackend,
     ]
 
     ordering_fields = [
@@ -33,6 +34,12 @@ class PostList(generics.ListCreateAPIView):
     search_fields = [
         'owner__username',
         'title',
+    ]
+    # Adding advance filter using django_filters app
+    filterset_fields = [
+        'owner__followed__owner__profile',
+        'likes__owner__profile',
+        'owner__profile',
     ]
 
     def perform_create(self, serializer):
