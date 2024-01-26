@@ -35,7 +35,12 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication'
         if 'DEV' in os.environ
         else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
-    )]
+    )],
+    # Pagination is really easy to set up  with REST Framework. In settings.py, 
+    # I’ll set it to PageNumberPagination with the page  size set to ten inside the REST_FRAMEWORK object.
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE' : 10,
 }
 
 # To enable token authentication, we’ll  also have to set REST_USE_JWT to True.  
