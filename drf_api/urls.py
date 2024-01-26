@@ -16,12 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from .views import root_route
+# 3. Now that the logout view is there, it has to be included in drf_api/urls.py . The logout_route also needs to be imported,
+from .views import root_route, logout_route
 
 urlpatterns = [
     path('', root_route),
     path('admin/', admin.site.urls),
     # to restric user to use their own profile
     path('api-auth/', include('rest_framework.urls')),
+    # 4. our logout route has to be above the default one to be matched first
+    path('dj-rest-auth/logout/', logout_route),
     path('dj-rest-auth/',include('dj_rest_auth.urls')),
     path(
         'dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')
