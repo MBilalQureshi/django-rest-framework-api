@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # To make this distinction, I’ll set  ‘DEV’ to ‘1’ in the env.py file.
 # Next, we can use this value to check  whether we’re in Development or Production,  
-# and authenticate using sessions  or tokens respectively.
+# and authenticate using sessions  or tokens respectively. https://jwt.io/ is the website for JSON web tokens.
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [(
         'rest_framework.authentication.SessionAuthentication'
