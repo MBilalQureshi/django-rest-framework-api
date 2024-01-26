@@ -43,6 +43,18 @@ REST_FRAMEWORK = {
     'PAGE_SIZE' : 10,
 }
 
+# Another thing to get out of the way  is to set the default renderer to JSON  
+# for the production environment. What this means is  that we want this nice, in-browser interface to be  
+# available in development only. All the frontend  app cares about is JSON, and nothing else,  
+# so it would be pointless to send html. Here’s how to do it in settings.py.
+# If the ‘DEV’ environment variable is NOT present,  I’ll set the rest framework’s default renderer  
+# classes attribute to JSONRenderer inside a list. FRONTEND only just need JSON data notthong else
+if 'DEV' not in os.environ:
+    REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+
+
 # To enable token authentication, we’ll  also have to set REST_USE_JWT to True.  
 # To make sure they’re sent over HTTPS only,  we will set JWT_AUTH_SECURE to True as well.
 # We also need to declare the cookie names for the  access and refresh tokens, as we’ll be using both.
