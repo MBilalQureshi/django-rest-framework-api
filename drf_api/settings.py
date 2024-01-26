@@ -66,6 +66,9 @@ REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+# To be able to have the front end app and the API deployed to different platforms,
+# set the JWT_AUTH_SAMESITE attribute to 'None'. Without this the cookies would be blocked
+JWT_AUTH_SAMESITE = 'None'
 
 # let’s overwrite the default USER_DETAILS_SERIALIZER in settings.py.
 REST_AUTH_SERIALIZERS = {
@@ -78,11 +81,12 @@ REST_AUTH_SERIALIZERS = {
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = 'DEV' in os.environ
 
-ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-qd5jaotagrv.ws-us107.gitpod.io']
+ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-qd5jaotagrv.ws-us107.gitpod.io','https://django-rest-framework-m5-2af18e6e1cf9.herokuapp.com/']
 
 
 # Application definition
@@ -105,6 +109,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'dj_rest_auth.registration',
+    'corsheaders',
     'profiles',
     'posts',
     'comments',
@@ -114,6 +119,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -122,6 +128,24 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Here the allowed origins are set for the network requests made to the server. 
+# The API will use the CLIENT_ORIGIN variable, which is the front end app's url. 
+# We haven't deployed that project yet, but that's ok. If the variable is not present,
+# that means the project is still in development, so then the regular expression in the
+#  else statement will allow requests that are coming from your IDE.
+
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://.*\.gitpod\.io$",
+    ]
+
+# Enable sending cookies in cross-origin requests so that users can get authentication functionality
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'drf_api.urls'
 
