@@ -41,6 +41,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE' : 10,
+    # e.g 02 Aug 2024 https://www.django-rest-framework.org/api-guide/settings/#date-and-time-formatting
+    # https://docs.python.org/3/library/time.html#time.strftime
+    'DATETIME_FORMAT' : '%d %b %Y'
 }
 
 # Another thing to get out of the way  is to set the default renderer to JSON  
