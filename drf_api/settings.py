@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+import re
 
 if os.path.exists('env.py'):
     import env
@@ -86,7 +87,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # DEBUG = True
 DEBUG = 'DEV' in os.environ
 
-ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-qd5jaotagrv.ws-us107.gitpod.io','django-rest-framework-m5-2af18e6e1cf9.herokuapp.com']
+ALLOWED_HOSTS = ['8000-mbilalqures-reactdjango-qd5jaotagrv.ws-us107.gitpod.io',os.environ.get('ALLOWED_HOST'),]
 
 
 # Application definition
@@ -139,9 +140,22 @@ if 'CLIENT_ORIGIN' in os.environ:
     CORS_ALLOWED_ORIGINS = [
         os.environ.get('CLIENT_ORIGIN')
     ]
-else:
+# else:
+#     CORS_ALLOWED_ORIGIN_REGEXES = [
+#         r"^https://.*\.gitpod\.io$",
+#     ]
+'''
+Above else is removed and below if is put because:
+In order to make our application more secure and accommodate the way Gitpod works by changing the workspace URL regularly, the below code has been provided for you to add to your project.
+
+The following code works as follows:
+a) When the CLIENT_ORIGIN_DEV environment variable is defined, the unique part of your gitpod preview URL is extracted.
+b) It is then included in the regular expression provided by us so that the gitpod workspace is still connected to our API when gitpod rotates the workspace URL.
+'''
+if 'CLIENT_ORIGIN_DEV' in os.environ:
+    extracted_url = re.match(r'^.+-', os.environ.get('CLIENT_ORIGIN_DEV', ''), re.IGNORECASE).group(0)
     CORS_ALLOWED_ORIGIN_REGEXES = [
-        r"^https://.*\.gitpod\.io$",
+        rf"{extracted_url}(eu|us)\d+\w\.gitpod\.io$",
     ]
 
 # Enable sending cookies in cross-origin requests so that users can get authentication functionality
