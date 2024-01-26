@@ -26,6 +26,26 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# To make this distinction, I’ll set  ‘DEV’ to ‘1’ in the env.py file.
+# Next, we can use this value to check  whether we’re in Development or Production,  
+# and authenticate using sessions  or tokens respectively.
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [(
+        'rest_framework.authentication.SessionAuthentication'
+        if 'DEV' in os.environ
+        else 'dj_rest_auth.jwt_auth.JWTCookieAuthentication'
+    )]
+}
+
+# To enable token authentication, we’ll  also have to set REST_USE_JWT to True.  
+# To make sure they’re sent over HTTPS only,  we will set JWT_AUTH_SECURE to True as well.
+# We also need to declare the cookie names for the  access and refresh tokens, as we’ll be using both.
+REST_USE_JWT = True
+JWT_AUTH_SECURE = True
+JWT_AUTH_COOKIE = 'my-app-auth'
+JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
+
 # TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 # Quick-start development settings - unsuitable for production
