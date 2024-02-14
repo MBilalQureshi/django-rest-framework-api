@@ -32,5 +32,8 @@ class CommentDetailSerializer(CommentSerializer):
     """
     Serializer for the Comment model used in Detail view
     Post is a read only field so that we dont have to set it on each update
+
+    When editing a Comment, it should always be associated with the same Post. 
+    Therefore, we should create an additional serializer which automatically references the Post Id which the comment is associated with.
     """
     post = serializers.ReadOnlyField(source='post.id')
